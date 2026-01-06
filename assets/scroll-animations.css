@@ -17,12 +17,22 @@
 
 /* Product card animations */
 .product-card {
-  opacity: 0;
-  transform: translateY(40px) scale(0.95);
+  opacity: 1;
+  transform: translateY(0) scale(1);
   transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
 }
 
-.product-card.animate-in {
+/* Only animate on homepage and collection pages */
+.featured-products__grid .product-card,
+.collection__grid .product-card,
+.shop-products__grid .product-card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+}
+
+.featured-products__grid .product-card.animate-in,
+.collection__grid .product-card.animate-in,
+.shop-products__grid .product-card.animate-in {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
