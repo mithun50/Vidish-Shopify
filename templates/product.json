@@ -38,6 +38,20 @@
             "show_dynamic_checkout": true
           }
         },
+        "trust_badges": {
+          "type": "trust_badges",
+          "settings": {
+            "show_cod": true,
+            "cod_text": "Cash on Delivery",
+            "cod_subtext": "Pay when you receive",
+            "show_shipping": true,
+            "shipping_text": "Free Shipping",
+            "shipping_subtext": "All over India",
+            "show_return": true,
+            "return_text": "7-Day Return",
+            "return_subtext": "Easy return policy"
+          }
+        },
         "description": {
           "type": "description",
           "settings": {}
@@ -47,7 +61,7 @@
           "settings": {}
         }
       },
-      "block_order": ["vendor", "title", "price", "variant_picker", "quantity_selector", "buy_buttons", "description", "share"]
+      "block_order": ["vendor", "title", "price", "variant_picker", "quantity_selector", "buy_buttons", "trust_badges", "description", "share"]
     },
     "product_recommendations": {
       "type": "product-recommendations",

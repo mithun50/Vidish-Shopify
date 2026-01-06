@@ -19,9 +19,11 @@
     margin-bottom: 20px;
   }
 
-  .footer__logo img {
-    max-height: 40px;
+  .footer__logo img,
+  .footer__logo-img {
+    max-height: 50px;
     width: auto;
+    border-radius: 8px;
   }
 
   .footer__logo-text {
@@ -261,9 +263,9 @@
       <div class="footer__brand">
         <div class="footer__logo">
           {% if section.settings.logo != blank %}
-            {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+            {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name, class: 'footer__logo-img' }}
           {% else %}
-            <span class="footer__logo-text">{{ shop.name }}</span>
+            <img src="{{ 'vidish-logo.jpg' | asset_url }}" alt="{{ shop.name }}" class="footer__logo-img" width="150" height="auto">
           {% endif %}
         </div>
         {% if section.settings.description != blank %}
