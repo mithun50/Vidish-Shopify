@@ -1,0 +1,33 @@
+{%- style -%}
+  :root {
+    /* Colors */
+    --color-primary: {{ settings.color_primary }};
+    --color-primary-dark: {{ settings.color_primary_dark }};
+    --color-secondary: {{ settings.color_secondary }};
+    --color-background: {{ settings.color_background }};
+    --color-background-secondary: {{ settings.color_background_secondary }};
+    --color-text: {{ settings.color_text }};
+    --color-text-light: {{ settings.color_text_light }};
+    --color-border: {{ settings.color_border }};
+    --color-sale: {{ settings.color_sale }};
+    --color-success: {{ settings.color_success }};
+
+    /* Typography */
+    --font-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+    --font-heading-weight: {{ settings.font_heading.weight }};
+    --font-heading-style: {{ settings.font_heading.style }};
+    --font-heading-scale: {{ settings.font_heading_scale | divided_by: 100.0 }};
+    --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+    --font-body-weight: {{ settings.font_body.weight }};
+    --font-body-style: {{ settings.font_body.style }};
+    --font-body-scale: {{ settings.font_body_scale | divided_by: 100.0 }};
+
+    /* Layout */
+    --page-width: {{ settings.page_width }}px;
+    --section-spacing: {{ settings.section_spacing }}px;
+    --border-radius: {{ settings.border_radius }}px;
+  }
+
+  {{ settings.font_heading | font_face: font_display: 'swap' }}
+  {{ settings.font_body | font_face: font_display: 'swap' }}
+{%- endstyle -%}

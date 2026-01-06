@@ -1,0 +1,269 @@
+/**
+ * Scroll Animations CSS
+ * Smooth reveal effects for products and sections
+ */
+
+/* Base animation states */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+[data-animate].animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Product card animations */
+.product-card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+}
+
+.product-card.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Section animations */
+.featured-products,
+.collection-list,
+.trust-badges,
+.shop-products {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.featured-products.section-visible,
+.collection-list.section-visible,
+.trust-badges.section-visible,
+.shop-products.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered header animations */
+.featured-products__badge,
+.featured-products__title,
+.featured-products__subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section-visible .featured-products__badge {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.section-visible .featured-products__title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.section-visible .featured-products__subtitle {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+/* Trust badge animations */
+.trust-badge {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section-visible .trust-badge {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.section-visible .trust-badge:nth-child(1) { transition-delay: 0.1s; }
+.section-visible .trust-badge:nth-child(2) { transition-delay: 0.2s; }
+.section-visible .trust-badge:nth-child(3) { transition-delay: 0.3s; }
+.section-visible .trust-badge:nth-child(4) { transition-delay: 0.4s; }
+
+.trust-badge:hover {
+  transform: translateY(-5px);
+}
+
+/* Collection list card animations */
+.collection-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section-visible .collection-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.section-visible .collection-card:nth-child(1) { transition-delay: 0.1s; }
+.section-visible .collection-card:nth-child(2) { transition-delay: 0.2s; }
+.section-visible .collection-card:nth-child(3) { transition-delay: 0.3s; }
+.section-visible .collection-card:nth-child(4) { transition-delay: 0.4s; }
+
+.collection-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* Hero parallax effect */
+.hero__media {
+  transition: transform 0.1s linear;
+}
+
+/* Floating cards enhanced animation */
+.hero__floating-card {
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero__floating-card--top {
+  animation-delay: 0s;
+}
+
+.hero__floating-card--bottom {
+  animation-delay: 1.5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+}
+
+/* Button hover effects */
+.hero__btn,
+.featured-products__btn,
+.button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hero__btn::after,
+.featured-products__btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.hero__btn:hover::after,
+.featured-products__btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Image reveal effect */
+.product-card__image-wrapper {
+  overflow: hidden;
+}
+
+.product-card__image {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: scale(1.08);
+}
+
+/* Sale badge pulse */
+.product-card__badge {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Quick add button slide up */
+.product-card__quick-add {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.product-card:hover .product-card__quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Footer - always visible */
+.footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Page transitions */
+.page-header {
+  animation: fadeInDown 0.6s ease forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading skeleton shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

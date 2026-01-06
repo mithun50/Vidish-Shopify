@@ -1,0 +1,41 @@
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "description": "Your one-stop shop for quality lifestyle products. We deliver happiness to your doorstep.",
+        "copyright_text": "All rights reserved.",
+        "show_payment_icons": true
+      },
+      "blocks": {
+        "menu_1": {
+          "type": "menu",
+          "settings": {
+            "title": "Quick Links",
+            "menu": "footer"
+          }
+        },
+        "menu_2": {
+          "type": "menu",
+          "settings": {
+            "title": "Information",
+            "menu": "footer"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Stay Connected",
+            "text": "Get exclusive deals and early access to new products.",
+            "placeholder": "Enter your email",
+            "button_text": "Subscribe"
+          }
+        }
+      },
+      "block_order": ["menu_1", "menu_2", "newsletter"]
+    }
+  },
+  "order": ["footer"]
+}

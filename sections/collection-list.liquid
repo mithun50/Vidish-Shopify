@@ -1,0 +1,224 @@
+{%- style -%}
+  .collection-list {
+    padding: var(--section-spacing) 0;
+  }
+
+  .collection-list__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .collection-list__title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+
+  .collection-list__subtitle {
+    font-size: 16px;
+    color: var(--color-text-light);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .collection-list__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .collection-card {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    aspect-ratio: 3/4;
+  }
+
+  .collection-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .collection-card:hover .collection-card__image {
+    transform: scale(1.08);
+  }
+
+  .collection-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    transition: background 0.3s ease;
+  }
+
+  .collection-card:hover .collection-card__overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
+  }
+
+  .collection-card__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .collection-card__count {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 16px;
+  }
+
+  .collection-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  .collection-card:hover .collection-card__link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .collection-card__link svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+
+  .collection-card__link:hover svg {
+    transform: translateX(4px);
+  }
+
+  .collection-card__full-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  @media (max-width: 991px) {
+    .collection-list__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 575px) {
+    .collection-list__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .collection-card {
+      aspect-ratio: 4/3;
+    }
+  }
+{%- endstyle -%}
+
+<section class="collection-list">
+  <div class="container">
+    {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <div class="collection-list__header">
+        {% if section.settings.title != blank %}
+          <h2 class="collection-list__title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="collection-list__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="collection-list__grid">
+      {% for block in section.blocks %}
+        {% assign collection = collections[block.settings.collection] %}
+        <div class="collection-card" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 600 | image_tag: class: 'collection-card__image', loading: 'lazy' }}
+          {% elsif collection.featured_image != blank %}
+            {{ collection.featured_image | image_url: width: 600 | image_tag: class: 'collection-card__image', loading: 'lazy' }}
+          {% else %}
+            {{ 'collection-1' | placeholder_svg_tag: 'collection-card__image' }}
+          {% endif %}
+
+          <div class="collection-card__overlay">
+            <h3 class="collection-card__title">{{ collection.title | default: block.settings.title | default: 'Collection' }}</h3>
+            <p class="collection-card__count">{{ collection.products_count | default: 0 }} Products</p>
+            <span class="collection-card__link">
+              Shop Now
+              {% render 'icon-arrow-right' %}
+            </span>
+          </div>
+
+          <a href="{{ collection.url | default: '#' }}" class="collection-card__full-link" aria-label="{{ collection.title | default: 'View collection' }}"></a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection List",
+  "tag": "section",
+  "class": "section-collection-list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Browse our curated collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title",
+          "info": "Leave blank to use collection title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image",
+          "info": "Leave blank to use collection image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection List",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,118 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "badge_text": "Join 1000+ happy customers",
+        "title": "Upgrade Your",
+        "title_highlight": "Everyday",
+        "subtitle": "Discover quality lifestyle products that make every moment special. From smart gadgets to home essentials.",
+        "button_text": "Shop Now",
+        "button_link": "/pages/shop",
+        "button_secondary_text": "View Collections",
+        "button_secondary_link": "/collections",
+        "height": 80,
+        "show_stats": true,
+        "show_floating_cards": true
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "1000+",
+            "label": "Happy Customers"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "50+",
+            "label": "Products"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "4.8★",
+            "label": "Rating"
+          }
+        }
+      },
+      "block_order": ["stat_1", "stat_2", "stat_3"]
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "badge_text": "Trending Now",
+        "title": "Our Best Sellers",
+        "subtitle": "Discover our most loved products by customers",
+        "products_to_show": 8,
+        "show_vendor": false,
+        "show_view_all": true,
+        "view_all_link": "/pages/shop",
+        "view_all_text": "View All Products"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "settings": {
+        "title": "Shop by Category",
+        "subtitle": "Browse our curated collections"
+      },
+      "blocks": {
+        "collection_1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_2": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_3": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": ["collection_1", "collection_2", "collection_3"]
+    },
+    "trust_badges": {
+      "type": "trust-badges",
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "icon": "truck",
+            "title": "Free Shipping",
+            "text": "On all prepaid and COD orders across India"
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "icon": "cash",
+            "title": "Cash on Delivery",
+            "text": "Pay securely with cash when your order arrives"
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "icon": "return",
+            "title": "7-Day Easy Returns",
+            "text": "Not happy? Return it easily within 7 days"
+          }
+        },
+        "badge_4": {
+          "type": "badge",
+          "settings": {
+            "icon": "secure",
+            "title": "Secure Payments",
+            "text": "100% secure payment with SSL encryption"
+          }
+        }
+      },
+      "block_order": ["badge_1", "badge_2", "badge_3", "badge_4"]
+    }
+  },
+  "order": ["hero", "featured_products", "collection_list", "trust_badges"]
+}

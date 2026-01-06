@@ -1,0 +1,74 @@
+{%- style -%}
+  .error-404 {
+    padding: 100px 0;
+    text-align: center;
+  }
+
+  .error-404__code {
+    font-size: clamp(100px, 20vw, 200px);
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0.2;
+  }
+
+  .error-404__title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .error-404__text {
+    font-size: 16px;
+    color: var(--color-text-light);
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .error-404__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .error-404__btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .error-404__btn svg {
+    width: 18px;
+    height: 18px;
+  }
+{%- endstyle -%}
+
+<section class="error-404">
+  <div class="container">
+    <div class="error-404__code">404</div>
+    <h1 class="error-404__title">Page Not Found</h1>
+    <p class="error-404__text">Sorry, the page you're looking for doesn't exist or has been moved.</p>
+    <a href="{{ routes.root_url }}" class="error-404__btn">
+      Back to Home
+      {% render 'icon-arrow-right' %}
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "tag": "section",
+  "class": "section-main-404",
+  "settings": []
+}
+{% endschema %}

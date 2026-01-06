@@ -1,0 +1,17 @@
+{%- comment -%}
+  Placeholder Product Card (used when no products available)
+{%- endcomment -%}
+
+<div class="product-card product-card--placeholder">
+  <div class="product-card__media">
+    {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
+  </div>
+  <div class="product-card__info">
+    <h3 class="product-card__title">
+      <a href="#">Product Title</a>
+    </h3>
+    <div class="product-card__price">
+      <span class="product-card__price--regular">{{ 999 | money }}</span>
+    </div>
+  </div>
+</div>

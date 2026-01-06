@@ -1,0 +1,199 @@
+{%- style -%}
+  .search-page {
+    padding: var(--section-spacing) 0;
+  }
+
+  .search-page__header {
+    margin-bottom: 40px;
+  }
+
+  .search-page__title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .search-page__form {
+    display: flex;
+    gap: 12px;
+    max-width: 600px;
+  }
+
+  .search-page__input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+  }
+
+  .search-page__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+
+  .search-page__btn {
+    padding: 14px 28px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .search-page__btn:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .search-page__results-info {
+    margin-bottom: 32px;
+    font-size: 15px;
+    color: var(--color-text-light);
+  }
+
+  .search-page__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .search-page__empty {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .search-page__empty-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-background-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--color-text-light);
+  }
+
+  .search-page__empty-icon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .search-page__empty-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .search-page__empty-text {
+    color: var(--color-text-light);
+  }
+
+  @media (max-width: 1199px) {
+    .search-page__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .search-page__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .search-page__form {
+      flex-direction: column;
+    }
+  }
+{%- endstyle -%}
+
+{%- paginate search.results by section.settings.products_per_page -%}
+<section class="search-page">
+  <div class="container">
+    <div class="search-page__header">
+      <h1 class="search-page__title">
+        {% if search.performed %}
+          Search results for "{{ search.terms }}"
+        {% else %}
+          Search
+        {% endif %}
+      </h1>
+
+      <form action="{{ routes.search_url }}" method="get" class="search-page__form">
+        <input
+          type="search"
+          name="q"
+          class="search-page__input"
+          placeholder="Search products..."
+          value="{{ search.terms | escape }}"
+          autocomplete="off"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="submit" class="search-page__btn">Search</button>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <p class="search-page__results-info">{{ search.results_count }} results found</p>
+
+        <div class="search-page__grid">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% render 'product-card', product: item %}
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <nav class="collection__pagination" aria-label="Pagination">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}">&larr;</a>
+            {% endif %}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}">{{ part.title }}</a>
+              {% else %}
+                <span {% if part.title == paginate.current_page %}class="current"{% endif %}>{{ part.title }}</span>
+              {% endif %}
+            {% endfor %}
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}">&rarr;</a>
+            {% endif %}
+          </nav>
+        {% endif %}
+      {% else %}
+        <div class="search-page__empty">
+          <div class="search-page__empty-icon">
+            {% render 'icon-search' %}
+          </div>
+          <h2 class="search-page__empty-title">No results found</h2>
+          <p class="search-page__empty-text">Try different keywords or browse our collections.</p>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Search Results",
+  "tag": "section",
+  "class": "section-main-search",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per Page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

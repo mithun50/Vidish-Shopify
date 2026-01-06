@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "page-header": {
+      "type": "page-header",
+      "settings": {
+        "show_title": true
+      }
+    },
+    "products": {
+      "type": "shop-all-products",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "enable_sorting": true,
+        "show_vendor": false
+      }
+    }
+  },
+  "order": ["page-header", "products"]
+}

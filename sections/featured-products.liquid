@@ -1,0 +1,210 @@
+{%- style -%}
+  .featured-products {
+    padding: var(--section-spacing) 0;
+  }
+
+  .featured-products__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .featured-products__badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .featured-products__title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+
+  .featured-products__subtitle {
+    font-size: 16px;
+    color: var(--color-text-light);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .featured-products__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .featured-products__footer {
+    text-align: center;
+    margin-top: 48px;
+  }
+
+  .featured-products__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .featured-products__btn:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .featured-products__btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 1199px) {
+    .featured-products__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .featured-products__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .featured-products__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+{%- endstyle -%}
+
+<section class="featured-products">
+  <div class="container">
+    <div class="featured-products__header">
+      {% if section.settings.badge_text != blank %}
+        <span class="featured-products__badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="featured-products__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="featured-products__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="featured-products__grid">
+      {% assign collection = collections[section.settings.collection] %}
+      {% assign products_to_show = section.settings.products_to_show %}
+
+      {% if collection != blank and collection.products.size > 0 %}
+        {% for product in collection.products limit: products_to_show %}
+          {% render 'product-card', product: product, show_vendor: section.settings.show_vendor %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..products_to_show) %}
+          {% render 'product-card-placeholder' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_view_all %}
+      <div class="featured-products__footer">
+        {% if section.settings.view_all_link != blank %}
+          <a href="{{ section.settings.view_all_link }}" class="featured-products__btn">
+        {% elsif section.settings.collection != blank %}
+          <a href="{{ collections[section.settings.collection].url }}" class="featured-products__btn">
+        {% else %}
+          <a href="/pages/shop" class="featured-products__btn">
+        {% endif %}
+          {{ section.settings.view_all_text | default: 'View All Products' }}
+          {% render 'icon-arrow-right' %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Trending Now"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover our most loved products by customers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to Show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show Vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link",
+      "info": "Leave empty to use collection URL or /pages/shop"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "View All Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

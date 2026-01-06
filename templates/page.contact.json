@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "page-header": {
+      "type": "page-header",
+      "settings": {
+        "show_title": true
+      }
+    },
+    "contact": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Get in Touch",
+        "subheading": "Have questions or need assistance? We're here to help! Fill out the form below and we'll get back to you within 24 hours."
+      }
+    }
+  },
+  "order": ["page-header", "contact"]
+}

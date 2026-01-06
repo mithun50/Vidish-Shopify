@@ -1,0 +1,77 @@
+{%- style -%}
+  .page {
+    padding: var(--section-spacing) 0;
+  }
+
+  .page__header {
+    margin-bottom: 40px;
+  }
+
+  .page__title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+  }
+
+  .page__content {
+    max-width: 800px;
+  }
+
+  .page__content h2 {
+    font-size: 24px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+
+  .page__content h3 {
+    font-size: 20px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+
+  .page__content p {
+    margin-bottom: 16px;
+    line-height: 1.8;
+    color: var(--color-text-light);
+  }
+
+  .page__content ul,
+  .page__content ol {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  .page__content li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+    color: var(--color-text-light);
+  }
+
+  .page__content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .page__content a:hover {
+    text-decoration: none;
+  }
+{%- endstyle -%}
+
+<section class="page">
+  <div class="container">
+    <div class="page__header">
+      <h1 class="page__title">{{ page.title }}</h1>
+    </div>
+    <div class="page__content">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "tag": "section",
+  "class": "section-main-page",
+  "settings": []
+}
+{% endschema %}

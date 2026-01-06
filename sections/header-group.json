@@ -1,0 +1,17 @@
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_height": 40,
+        "menu": "main-menu",
+        "announcement_text": "Free Shipping on all orders over ₹499",
+        "announcement_link": "/pages/shop",
+        "announcement_link_text": "Shop Now"
+      }
+    }
+  },
+  "order": ["header"]
+}

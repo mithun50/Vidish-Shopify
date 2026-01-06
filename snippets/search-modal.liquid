@@ -1,0 +1,550 @@
+<!-- Search Modal -->
+<div class="search-modal" data-search-modal>
+  <div class="search-modal__overlay" data-search-close></div>
+  <div class="search-modal__content">
+    <div class="search-modal__header">
+      <h3 class="search-modal__title">Search Products</h3>
+      <button type="button" class="search-modal__close" aria-label="Close search" data-search-close>
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" class="search-modal__form">
+      <div class="search-modal__input-wrapper">
+        {% render 'icon-search' %}
+        <input
+          type="search"
+          name="q"
+          class="search-modal__input"
+          placeholder="Search for products..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          data-search-input
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="button" class="search-modal__clear" data-search-clear style="display: none;">
+          {% render 'icon-close' %}
+        </button>
+      </div>
+      <button type="submit" class="search-modal__btn">
+        Search
+      </button>
+    </form>
+
+    <!-- Live Search Results -->
+    <div class="search-modal__results" data-search-results style="display: none;">
+      <div class="search-modal__results-header">
+        <span>Products</span>
+        <a href="#" class="search-modal__view-all" data-search-view-all>View all results</a>
+      </div>
+      <div class="search-modal__results-grid" data-search-results-grid>
+        <!-- Results populated by JS -->
+      </div>
+      <div class="search-modal__loading" data-search-loading style="display: none;">
+        <div class="search-modal__spinner"></div>
+        <span>Searching...</span>
+      </div>
+      <div class="search-modal__no-results" data-search-no-results style="display: none;">
+        <p>No products found</p>
+      </div>
+    </div>
+
+    <!-- Popular Searches (shown when no input) -->
+    <div class="search-modal__popular" data-search-popular>
+      <p class="search-modal__popular-title">Popular searches</p>
+      <div class="search-modal__popular-tags">
+        <a href="{{ routes.search_url }}?q=trending&type=product" class="search-modal__tag">Trending</a>
+        <a href="{{ routes.search_url }}?q=new&type=product" class="search-modal__tag">New Arrivals</a>
+        <a href="{{ routes.search_url }}?q=best&type=product" class="search-modal__tag">Best Sellers</a>
+        <a href="/pages/shop" class="search-modal__tag">View All</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .search-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .search-modal__content {
+    position: relative;
+    width: 90%;
+    max-width: 640px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: var(--color-background);
+    border-radius: calc(var(--border-radius) * 2);
+    padding: 28px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    transform: translateY(-30px) scale(0.95);
+    transition: transform 0.3s ease;
+  }
+
+  .search-modal.active .search-modal__content {
+    transform: translateY(0) scale(1);
+  }
+
+  .search-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .search-modal__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .search-modal__close {
+    background: var(--color-background-secondary);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    color: var(--color-text-light);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__close:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .search-modal__close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .search-modal__form {
+    display: flex;
+    gap: 12px;
+  }
+
+  .search-modal__input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-modal__input-wrapper > svg {
+    position: absolute;
+    left: 18px;
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-light);
+    pointer-events: none;
+  }
+
+  .search-modal__input {
+    width: 100%;
+    padding: 16px 50px 16px 52px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    color: var(--color-text);
+    background: var(--color-background);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .search-modal__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  }
+
+  .search-modal__input::placeholder {
+    color: var(--color-text-light);
+  }
+
+  .search-modal__clear {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--color-text-light);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__clear:hover {
+    color: var(--color-text);
+    background: var(--color-background-secondary);
+  }
+
+  .search-modal__clear svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .search-modal__btn {
+    padding: 16px 32px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  /* Live Results */
+  .search-modal__results {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .search-modal__results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
+    font-weight: 600;
+  }
+
+  .search-modal__view-all {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .search-modal__view-all:hover {
+    text-decoration: underline;
+  }
+
+  .search-modal__results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .search-result-item:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .search-result-item__image {
+    width: 60px;
+    height: 60px;
+    border-radius: calc(var(--border-radius) / 2);
+    object-fit: cover;
+    background: var(--color-background-secondary);
+  }
+
+  .search-result-item__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-result-item__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search-result-item__price {
+    font-size: 14px;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .search-result-item__price s {
+    color: var(--color-text-light);
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  /* Loading */
+  .search-modal__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px;
+    color: var(--color-text-light);
+  }
+
+  .search-modal__spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* No Results */
+  .search-modal__no-results {
+    text-align: center;
+    padding: 32px;
+    color: var(--color-text-light);
+  }
+
+  /* Popular */
+  .search-modal__popular {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .search-modal__popular-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .search-modal__popular-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search-modal__tag {
+    display: inline-block;
+    padding: 10px 18px;
+    background: var(--color-background-secondary);
+    color: var(--color-text);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__tag:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 575px) {
+    .search-modal {
+      padding: 20px;
+      align-items: flex-start;
+    }
+
+    .search-modal__content {
+      padding: 20px;
+      max-height: 90vh;
+    }
+
+    .search-modal__form {
+      flex-direction: column;
+    }
+
+    .search-modal__btn {
+      width: 100%;
+    }
+
+    .search-result-item__image {
+      width: 50px;
+      height: 50px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchModal = document.querySelector('[data-search-modal]');
+    const searchToggle = document.querySelectorAll('[data-search-toggle]');
+    const searchClose = document.querySelectorAll('[data-search-close]');
+    const searchInput = document.querySelector('[data-search-input]');
+    const searchClear = document.querySelector('[data-search-clear]');
+    const searchResults = document.querySelector('[data-search-results]');
+    const searchResultsGrid = document.querySelector('[data-search-results-grid]');
+    const searchLoading = document.querySelector('[data-search-loading]');
+    const searchNoResults = document.querySelector('[data-search-no-results]');
+    const searchPopular = document.querySelector('[data-search-popular]');
+    const searchViewAll = document.querySelector('[data-search-view-all]');
+
+    let searchTimeout;
+
+    // Open search modal
+    searchToggle.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => searchInput.focus(), 150);
+      });
+    });
+
+    // Close search modal
+    function closeSearch() {
+      searchModal.classList.remove('active');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      searchClear.style.display = 'none';
+      searchResults.style.display = 'none';
+      searchPopular.style.display = 'block';
+    }
+
+    searchClose.forEach(btn => {
+      btn.addEventListener('click', closeSearch);
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && searchModal.classList.contains('active')) {
+        closeSearch();
+      }
+    });
+
+    // Clear search
+    searchClear.addEventListener('click', function() {
+      searchInput.value = '';
+      searchClear.style.display = 'none';
+      searchResults.style.display = 'none';
+      searchPopular.style.display = 'block';
+      searchInput.focus();
+    });
+
+    // Live search
+    searchInput.addEventListener('input', function() {
+      const query = this.value.trim();
+
+      // Show/hide clear button
+      searchClear.style.display = query.length > 0 ? 'block' : 'none';
+
+      // Clear previous timeout
+      clearTimeout(searchTimeout);
+
+      if (query.length < 2) {
+        searchResults.style.display = 'none';
+        searchPopular.style.display = 'block';
+        return;
+      }
+
+      // Show loading
+      searchResults.style.display = 'block';
+      searchPopular.style.display = 'none';
+      searchLoading.style.display = 'flex';
+      searchResultsGrid.style.display = 'none';
+      searchNoResults.style.display = 'none';
+
+      // Update view all link
+      searchViewAll.href = `/search?q=${encodeURIComponent(query)}&type=product`;
+
+      // Debounced search
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+
+    // Perform search using Shopify's predictive search API
+    async function performSearch(query) {
+      try {
+        const response = await fetch(
+          `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6`
+        );
+        const data = await response.json();
+
+        searchLoading.style.display = 'none';
+
+        const products = data.resources?.results?.products || [];
+
+        if (products.length > 0) {
+          renderResults(products);
+          searchResultsGrid.style.display = 'flex';
+          searchNoResults.style.display = 'none';
+        } else {
+          searchResultsGrid.style.display = 'none';
+          searchNoResults.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+        searchLoading.style.display = 'none';
+        searchNoResults.style.display = 'block';
+      }
+    }
+
+    // Render search results
+    function renderResults(products) {
+      searchResultsGrid.innerHTML = products.map(product => {
+        const image = product.featured_image?.url || product.image || '';
+        const price = formatMoney(product.price);
+        const comparePrice = product.compare_at_price_max > product.price
+          ? `<s>${formatMoney(product.compare_at_price_max)}</s>`
+          : '';
+
+        return `
+          <a href="${product.url}" class="search-result-item">
+            <img src="${image ? image + '&width=120' : ''}" alt="${product.title}" class="search-result-item__image" loading="lazy">
+            <div class="search-result-item__info">
+              <div class="search-result-item__title">${product.title}</div>
+              <div class="search-result-item__price">${price} ${comparePrice}</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Format money
+    function formatMoney(cents) {
+      return '₹' + (cents / 100).toFixed(0);
+    }
+  });
+</script>

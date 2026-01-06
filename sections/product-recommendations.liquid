@@ -1,0 +1,80 @@
+{%- style -%}
+  .product-recommendations {
+    padding: var(--section-spacing) 0;
+    background: var(--color-background-secondary);
+  }
+
+  .product-recommendations__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .product-recommendations__title {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+  }
+
+  .product-recommendations__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 1199px) {
+    .product-recommendations__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .product-recommendations__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="product-recommendations" data-product-recommendations>
+  <div class="container">
+    <div class="product-recommendations__header">
+      <h2 class="product-recommendations__title">{{ section.settings.title }}</h2>
+    </div>
+
+    <div class="product-recommendations__grid">
+      {% if recommendations.performed and recommendations.products_count > 0 %}
+        {% for product in recommendations.products limit: section.settings.products_to_show %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..section.settings.products_to_show) %}
+          {% render 'product-card-placeholder' %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "tag": "section",
+  "class": "section-product-recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "You May Also Like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to Show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

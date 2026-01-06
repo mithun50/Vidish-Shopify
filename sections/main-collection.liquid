@@ -1,0 +1,293 @@
+{%- style -%}
+  .collection {
+    padding: var(--section-spacing) 0;
+  }
+
+  .collection__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .collection__count {
+    font-size: 14px;
+    color: var(--color-text-light);
+  }
+
+  .collection__controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .collection__sort {
+    position: relative;
+  }
+
+  .collection__sort-select {
+    appearance: none;
+    padding: 10px 36px 10px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    background: var(--color-background);
+    cursor: pointer;
+  }
+
+  .collection__sort-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--color-text-light);
+  }
+
+  .collection__sort-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .collection__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .collection__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .collection__empty-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-background-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--color-text-light);
+  }
+
+  .collection__empty-icon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .collection__empty-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .collection__empty-text {
+    color: var(--color-text-light);
+    margin-bottom: 24px;
+  }
+
+  .collection__empty-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .collection__empty-btn:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .collection__pagination {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .collection__pagination a,
+  .collection__pagination span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .collection__pagination a:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .collection__pagination .current {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  @media (max-width: 1199px) {
+    .collection__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .collection__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .collection__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+{%- endstyle -%}
+
+{%- paginate collection.products by section.settings.products_per_page -%}
+<section class="collection">
+  <div class="container">
+    <div class="collection__header">
+      <p class="collection__count">{{ collection.products_count }} products</p>
+
+      <div class="collection__controls">
+        {% if section.settings.enable_sorting %}
+          <div class="collection__sort">
+            <select class="collection__sort-select" data-sort-select>
+              <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+              <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+              <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>A-Z</option>
+              <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>Z-A</option>
+              <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price: High to Low</option>
+              <option value="created-ascending" {% if collection.sort_by == 'created-ascending' %}selected{% endif %}>Oldest</option>
+              <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+            </select>
+            <span class="collection__sort-icon">
+              {% render 'icon-arrow-right' %}
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="collection__grid">
+      {% if collection.products.size > 0 %}
+        {% for product in collection.products %}
+          {% render 'product-card', product: product, show_vendor: section.settings.show_vendor %}
+        {% endfor %}
+      {% else %}
+        <div class="collection__empty">
+          <div class="collection__empty-icon">
+            {% render 'icon-search' %}
+          </div>
+          <h2 class="collection__empty-title">No products found</h2>
+          <p class="collection__empty-text">Try adjusting your filters or browse our other collections.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="collection__empty-btn">View All Products</a>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <nav class="collection__pagination" aria-label="Pagination">
+        {% if paginate.previous %}
+          <a href="{{ paginate.previous.url }}" aria-label="Previous page">&larr;</a>
+        {% endif %}
+
+        {% for part in paginate.parts %}
+          {% if part.is_link %}
+            <a href="{{ part.url }}">{{ part.title }}</a>
+          {% else %}
+            {% if part.title == paginate.current_page %}
+              <span class="current" aria-current="page">{{ part.title }}</span>
+            {% else %}
+              <span>{{ part.title }}</span>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% if paginate.next %}
+          <a href="{{ paginate.next.url }}" aria-label="Next page">&rarr;</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  </div>
+</section>
+{%- endpaginate -%}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sortSelect = document.querySelector('[data-sort-select]');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', this.value);
+        window.location.href = url.toString();
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "tag": "section",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per Page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (Desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable Filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable Sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show Vendor",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

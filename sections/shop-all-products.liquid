@@ -1,0 +1,124 @@
+{{ 'section-shop-products.css' | asset_url | stylesheet_tag }}
+
+<div class="shop-products section-{{ section.id }}">
+  <div class="container">
+    {%- if section.settings.enable_sorting -%}
+      <div class="shop-products__toolbar">
+        <div class="shop-products__count">
+          <span>{{ 'collections.general.items_count' | t: count: collections.all.products_count }}</span>
+        </div>
+        <div class="shop-products__sort">
+          <label for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+          <select id="SortBy" class="shop-products__sort-select" onchange="window.location.href = this.value">
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            <option value="?sort_by=manual" {% if sort_by == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+            <option value="?sort_by=best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+            <option value="?sort_by=title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.alphabetically_az' | t }}</option>
+            <option value="?sort_by=title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>{{ 'collections.sorting.alphabetically_za' | t }}</option>
+            <option value="?sort_by=price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_low_high' | t }}</option>
+            <option value="?sort_by=price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_high_low' | t }}</option>
+            <option value="?sort_by=created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>{{ 'collections.sorting.date_old_new' | t }}</option>
+            <option value="?sort_by=created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>{{ 'collections.sorting.date_new_old' | t }}</option>
+          </select>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- paginate collections.all.products by section.settings.products_per_page -%}
+      {%- if collections.all.products.size > 0 -%}
+        <div class="shop-products__grid" style="--columns: {{ section.settings.columns_desktop }}">
+          {%- for product in collections.all.products -%}
+            <div class="shop-products__item">
+              {% render 'product-card', product: product, show_vendor: section.settings.show_vendor %}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="pagination" aria-label="Pagination">
+            <ul class="pagination__list">
+              {%- if paginate.previous -%}
+                <li class="pagination__item">
+                  <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="{{ 'general.pagination.previous' | t }}">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="12 15 7 10 12 5"></polyline>
+                    </svg>
+                    {{ 'general.pagination.previous' | t }}
+                  </a>
+                </li>
+              {%- endif -%}
+
+              {%- for part in paginate.parts -%}
+                <li class="pagination__item">
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+                  {%- else -%}
+                    {%- if part.title == paginate.current_page -%}
+                      <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
+                    {%- else -%}
+                      <span class="pagination__link pagination__link--gap">{{ part.title }}</span>
+                    {%- endif -%}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+
+              {%- if paginate.next -%}
+                <li class="pagination__item">
+                  <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="{{ 'general.pagination.next' | t }}">
+                    {{ 'general.pagination.next' | t }}
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="8 5 13 10 8 15"></polyline>
+                    </svg>
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        <div class="shop-products__empty">
+          <p>{{ 'collections.general.no_matches' | t }}</p>
+          <a href="{{ routes.root_url }}" class="button">{{ 'general.pagination.previous' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop All Products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

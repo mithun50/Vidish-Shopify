@@ -1,0 +1,484 @@
+{%- style -%}
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: {{ section.settings.background_color | default: 'var(--color-background-secondary)' }};
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    min-height: {{ section.settings.height }}vh;
+    padding: 80px 0;
+  }
+
+  .hero__content {
+    max-width: 580px;
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  .hero__badge svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .hero__title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-text);
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease 0.1s forwards;
+    opacity: 0;
+  }
+
+  .hero__title-highlight {
+    color: var(--color-primary);
+  }
+
+  .hero__subtitle {
+    font-size: 18px;
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    animation: fadeInUp 0.6s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease 0.3s forwards;
+    opacity: 0;
+  }
+
+  .hero__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .hero__btn--primary {
+    background: var(--color-primary);
+    color: white;
+    border: 2px solid var(--color-primary);
+  }
+
+  .hero__btn--primary:hover {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+  }
+
+  .hero__btn--secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+  }
+
+  .hero__btn--secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .hero__btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .hero__stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 48px;
+    animation: fadeInUp 0.6s ease 0.4s forwards;
+    opacity: 0;
+  }
+
+  .hero__stat {
+    text-align: left;
+  }
+
+  .hero__stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .hero__stat-label {
+    font-size: 14px;
+    color: var(--color-text-light);
+  }
+
+  .hero__media {
+    position: relative;
+    animation: fadeInRight 0.8s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  .hero__image-wrapper {
+    position: relative;
+    border-radius: calc(var(--border-radius) * 2);
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  }
+
+  .hero__image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .hero__floating-card {
+    position: absolute;
+    background: white;
+    padding: 16px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .hero__floating-card--top {
+    top: 10%;
+    right: -20px;
+  }
+
+  .hero__floating-card--bottom {
+    bottom: 15%;
+    left: -20px;
+    animation-delay: 1.5s;
+  }
+
+  .hero__floating-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero__floating-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .hero__floating-text {
+    font-size: 14px;
+  }
+
+  .hero__floating-text strong {
+    display: block;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .hero__floating-text span {
+    color: var(--color-text-light);
+    font-size: 12px;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 991px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      min-height: auto;
+      padding: 60px 0;
+    }
+
+    .hero__content {
+      max-width: 100%;
+      order: 1;
+    }
+
+    .hero__media {
+      order: 0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .hero__stats {
+      justify-content: center;
+    }
+
+    .hero__actions {
+      justify-content: center;
+    }
+
+    .hero__floating-card {
+      display: none;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .hero__title {
+      font-size: 32px;
+    }
+
+    .hero__stats {
+      gap: 24px;
+    }
+
+    .hero__stat-number {
+      font-size: 24px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div class="hero__content">
+        {% if section.settings.badge_text != blank %}
+          <div class="hero__badge">
+            {% render 'icon-star' %}
+            {{ section.settings.badge_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h1 class="hero__title">
+            {{ section.settings.title }}
+            {% if section.settings.title_highlight != blank %}
+              <span class="hero__title-highlight">{{ section.settings.title_highlight }}</span>
+            {% endif %}
+          </h1>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+
+        <div class="hero__actions">
+          {% if section.settings.button_text != blank %}
+            <a href="{{ section.settings.button_link }}" class="hero__btn hero__btn--primary">
+              {{ section.settings.button_text }}
+              {% render 'icon-arrow-right' %}
+            </a>
+          {% endif %}
+          {% if section.settings.button_secondary_text != blank %}
+            <a href="{{ section.settings.button_secondary_link }}" class="hero__btn hero__btn--secondary">
+              {{ section.settings.button_secondary_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_stats %}
+          <div class="hero__stats">
+            {% for block in section.blocks %}
+              {% if block.type == 'stat' %}
+                <div class="hero__stat" {{ block.shopify_attributes }}>
+                  <div class="hero__stat-number">{{ block.settings.number }}</div>
+                  <div class="hero__stat-label">{{ block.settings.label }}</div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="hero__media">
+        <div class="hero__image-wrapper">
+          {% if section.settings.image != blank %}
+            {{ section.settings.image | image_url: width: 800 | image_tag: class: 'hero__image', loading: 'eager', alt: section.settings.title }}
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__image' }}
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_floating_cards %}
+          <div class="hero__floating-card hero__floating-card--top">
+            <div class="hero__floating-icon">
+              {% render 'icon-truck' %}
+            </div>
+            <div class="hero__floating-text">
+              <strong>Free Delivery</strong>
+              <span>On orders ₹499+</span>
+            </div>
+          </div>
+          <div class="hero__floating-card hero__floating-card--bottom">
+            <div class="hero__floating-icon">
+              {% render 'icon-shield' %}
+            </div>
+            <div class="hero__floating-text">
+              <strong>7-Day Returns</strong>
+              <span>Easy & hassle-free</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Join 1000+ happy customers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Upgrade Your"
+    },
+    {
+      "type": "text",
+      "id": "title_highlight",
+      "label": "Title Highlight",
+      "default": "Everyday"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover quality lifestyle products that make every moment special. From smart gadgets to home essentials."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Primary Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_secondary_text",
+      "label": "Secondary Button Text",
+      "default": "View Collections"
+    },
+    {
+      "type": "url",
+      "id": "button_secondary_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Section Height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "unit": "vh"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Statistics",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_floating_cards",
+      "label": "Show Floating Cards",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "1000+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Happy Customers"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "1000+", "label": "Happy Customers" }},
+        { "type": "stat", "settings": { "number": "50+", "label": "Products" }},
+        { "type": "stat", "settings": { "number": "4.8★", "label": "Rating" }}
+      ]
+    }
+  ]
+}
+{% endschema %}
