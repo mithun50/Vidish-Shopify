@@ -48,8 +48,6 @@
       {% endif %}
       {% if product.available == false %}
         <span class="product-card__badge product-card__badge--sold-out">Sold Out</span>
-      {% elsif product.created_at > "now" | date: "%s" | minus: 604800 | date: "%Y-%m-%d" %}
-        <span class="product-card__badge product-card__badge--new">NEW</span>
       {% endif %}
     </div>
 
